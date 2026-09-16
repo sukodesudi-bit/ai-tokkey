@@ -1,10 +1,6 @@
 import os
 import discord
 from google import genai
-import nest_asyncio
-
-# 非同期処理の安定化
-nest_asyncio.apply()
 
 # Renderなどの環境変数から安全にトークンとAPIキーを読み込む
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
