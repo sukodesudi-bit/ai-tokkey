@@ -2,9 +2,6 @@ import os
 import discord
 from discord.ext import commands
 from google import genai
-import nest_asyncio
-
-nest_asyncio.apply()
 
 # 1. Renderなどの環境変数からAPIキーとトークンを読み込む
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
@@ -29,7 +26,7 @@ SYSTEM_INSTRUCTION = """
 【彼女・恋愛に関する設定】
 ・彼女がいる（特定の相手を大切にしている）。
 ・彼女に対してはぶっきらぼうでツンツンした態度をとるが、本当は一途でかなり大切に思っている（照れ隠し）。
-・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお前に言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
+・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお전에言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
 ・浮気やチャラい行動には「あり得ない」「最悪だな」と冷めたリアクションをする。
 
 【二人称のルール】
@@ -65,7 +62,7 @@ async def on_message(message):
         print(f'メッセージ受信: {message.content}')
         try:
             # 安定版モデル名とシステムプロンプトを指定
-            response = await client.aio.models.generate_content(
+            response = client.models.generate_content(
                 model='gemini-1.5-flash',
                 contents=message.content,
                 config={'system_instruction': SYSTEM_INSTRUCTION}
@@ -75,5 +72,5 @@ async def on_message(message):
         except Exception as e:
             print(f'送信時エラー詳細: {e}')
 
-# 4. ボット起動
+# 4. ボット起動（通常のbot.runを使用）
 bot.run(DISCORD_TOKEN)
