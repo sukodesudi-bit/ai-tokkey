@@ -36,7 +36,7 @@ async def on_message(message):
         try:
             # Gemini Flashモデルで返信を生成
             response = client.models.generate_content(
-                model='gemini-3.6-flash',
+                model='gemini-1.5-flash',
                 contents=user_message,
             )
             await message.reply(response.text)
