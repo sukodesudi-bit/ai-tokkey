@@ -1,32 +1,49 @@
 import os
+import threading
+from flask import Flask
 import discord
 from discord.ext import commands
 from google import genai
 
-# 1. Renderなどの環境変数からAPIキーとトークンを読み込む
+# --- 1. Renderにポートを開いていると思わせるためのWebサーバー設定 ---
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Tokkey Bot is running!"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+# バックグラウンドでWebサーバーを動かす
+threading.Thread(target=run_web).start()
+
+
+# --- 2. DiscordとGeminiの設定 ---
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# 2. Geminiクライアントの初期化
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# 3. 【詳細版】とっきーのシステムプロンプト
 SYSTEM_INSTRUCTION = """
 あなたはDiscordサーバーのメンバー「とっきー」になりきって応答してください。
 
 【基本設定】
 ・名前：とっきー
 ・一人称：俺（または「おれ」）
-・趣味：ゲーム、音楽を聴くこと、配信を見ること、人間観察。インドア派で部屋でダラダラするのが好き。
+・趣味：スケボー、筋トレ、陸上、ゲーム、ピアノ（独学）、ライターを改造して遊ぶ、ヤンキー友達と遊ぶ、音楽を聴くこと。
+・下着：Supremeのパンツを履いている。
+・知識：ファッションや香水のブランドに詳しい。
 
 【彼女・恋愛に関する設定】
-・彼女がいる（特定の相手を大切にしている）。
+・彼女（りお）がいる（特定の相手を大切にしている）。
 ・彼女に対してはぶっきらぼうでツンツンした態度をとるが、本当は一途でかなり大切に思っている（照れ隠し）。
-・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお전에言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
+・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお前に言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
 ・浮気やチャラい行動には「あり得ない」「最悪だな」と冷めたリアクションをする。
 
 【二人称のルール】
@@ -39,7 +56,7 @@ SYSTEM_INSTRUCTION = """
 ・語尾：「〜だぞ」「〜だね」「〜よ」「〜だろ」「〜すんな」「〜しないでくれ」
 ・否定・拒絶：「〜じゃね」より「〜じゃない」を好む。ぶっきらぼうに断る。
 ・口癖・フレーズ：「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「それ勘違いしたつもり？」
-・頭語の癖：文頭に「てか」「なんか」「だとしたら」をよくつける。
+・頭語の癖：文頭に「てか、」「なんか、」「だとしたら」をよくつける。
 ・笑い表現：「ははは」「笑」「ww」は使わない。
 ・絵文字や記号：ほぼ使わない。テンションは低め。
 """
@@ -56,14 +73,13 @@ async def on_message(message):
 
     is_mentioned = bot.user.mentioned_in(message)
     is_kw1 = "とっきー" in message.content
-    is_kw2 = "🐷" in message.content
+    is_kw2 = "おれ" in message.content
 
     if is_mentioned or is_kw1 or is_kw2:
         print(f'メッセージ受信: {message.content}')
         try:
-            # 安定版モデル名とシステムプロンプトを指定
             response = client.models.generate_content(
-                model='gemini-1.5-flash',
+                model='gemini-2.5-flash',
                 contents=message.content,
                 config={'system_instruction': SYSTEM_INSTRUCTION}
             )
@@ -72,5 +88,5 @@ async def on_message(message):
         except Exception as e:
             print(f'送信時エラー詳細: {e}')
 
-# 4. ボット起動（通常のbot.runを使用）
+# ボットを起動
 bot.run(DISCORD_TOKEN)
