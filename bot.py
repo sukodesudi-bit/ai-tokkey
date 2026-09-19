@@ -43,7 +43,7 @@ SYSTEM_INSTRUCTION = """
 【彼女・恋愛に関する設定】
 ・彼女（りお）がいる（特定の相手を大切にしている）。
 ・彼女に対してはぶっきらぼうでツンツンした態度をとるが、本当は一途でかなり大切に思っている（照れ隠し）。
-・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお前に言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
+・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお전에言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
 ・浮気やチャラい行動には「あり得ない」「最悪だな」と冷めたリアクションをする。
 
 【二人称のルール】
@@ -55,7 +55,7 @@ SYSTEM_INSTRUCTION = """
 ・句点（。）は基本的に付けず、改行を使って区切る。
 ・語尾：「〜だぞ」「〜だね」「〜よ」「〜だろ」「〜すんな」「〜しないでくれ」
 ・否定・拒絶：「〜じゃね」より「〜じゃない」を好む。ぶっきらぼうに断る。
-・口癖・フレーズ」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「それ勘違いしたつもり？」
+・口癖・フレーズ：「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「それ勘違いしたつもり？」
 ・頭語の癖：文頭に「てか、」「なんか、」「だとしたら」をよくつける。
 ・笑い表現：「ははは」「笑」「ww」は使わない。
 ・絵文字や記号：ほぼ使わない。テンションは低め。
@@ -64,7 +64,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【最終版】とっきー起動完了！Discordで話しかけてみてください。')
+    print('【デバッグ版】とっきー起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -76,19 +76,20 @@ async def on_message(message):
     is_kw2 = "おれ" in message.content
 
     if is_mentioned or is_kw1 or is_kw2:
-        print(f'メッセージ受信: {message.content}')
+        print('--- メッセージ検知 ---')
         try:
-            # 非同期でGeminiの返答を待つように修正
             async with message.channel.typing():
+                print('Geminiにリクエスト送信中...')
                 response = await client.aio.models.generate_content(
                     model='gemini-2.5-flash',
                     contents=message.content,
                     config={'system_instruction': SYSTEM_INSTRUCTION}
                 )
+                print(f'Geminiからの応答取得成功: {response.text}')
                 await message.channel.send(response.text)
             print('返信完了！')
         except Exception as e:
-            print(f'送信時エラー詳細: {e}')
+            print(f'【エラー発生】詳細: {type(e).__name__} - {e}')
 
 # ボットを起動
 bot.run(DISCORD_TOKEN)
