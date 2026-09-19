@@ -78,12 +78,14 @@ async def on_message(message):
     if is_mentioned or is_kw1 or is_kw2:
         print(f'メッセージ受信: {message.content}')
         try:
-            response = client.models.generate_content(
-                model='gemini-2.5-flash',
-                contents=message.content,
-                config={'system_instruction': SYSTEM_INSTRUCTION}
-            )
-            await message.channel.send(response.text)
+            # 返信を考えている間に「入力中...」を表示する
+            async with message.channel.typing():
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=message.content,
+                    config={'system_instruction': SYSTEM_INSTRUCTION}
+                )
+                await message.channel.send(response.text)
             print('返信完了！')
         except Exception as e:
             print(f'送信時エラー詳細: {e}')
