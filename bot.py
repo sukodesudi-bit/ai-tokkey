@@ -64,28 +64,37 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【完全テスト版】とっきー起動完了！')
+    print('【安定版】とっきー起動完了！')
 
 @bot.event
 async def on_message(message):
     if message.author.bot:
         return
 
-    # 条件をなくし、どんなメッセージでも必ず反応するように変更
-    print(f'★メッセージ完全キャッチ: {message.content}')
-    try:
-        async with message.channel.typing():
-            print('Geminiにリクエスト送信中...')
-            response = await client.aio.models.generate_content(
-                model='gemini-2.5-flash',
-                contents=message.content,
-                config={'system_instruction': SYSTEM_INSTRUCTION}
-            )
-            print(f'Gemini成功！返信テキスト: {response.text}')
-            await message.channel.send(response.text)
-        print('返信完了！')
-    except Exception as e:
-        print(f'【重大エラー】詳細: {type(e).__name__} - {e}')
+    # 条件：自分がテストしやすいように、まずは「とっきー」と話しかけた時に反応するようにします
+    is_mentioned = bot.user.mentioned_in(message)
+    is_kw1 = "とっきー" in message.content
+    is_kw2 = "おれ" in message.content
+
+    if is_mentioned or is_kw1 or is_kw2:
+        print(f'メッセージ受信: {message.content}')
+        try:
+            # 入力中を表示しつつ、安全にGeminiを呼び出す
+            async with message.channel.typing():
+                # 同期メソッドを安全に実行
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=message.content,
+                    config={'system_instruction': SYSTEM_INSTRUCTION}
+                )
+                if response and response.text:
+                    await message.channel.send(response.text)
+                    print(f'返信成功: {response.text}')
+                else:
+                    await message.channel.send("……。")
+                    print('返信が空でした')
+        except Exception as e:
+            print(f'【エラー発生】詳細: {type(e).__name__} - {e}')
 
 # ボットを起動
 bot.run(DISCORD_TOKEN)
