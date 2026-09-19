@@ -1,11 +1,15 @@
 import os
 import threading
 import asyncio
+import warnings
 from flask import Flask
 import discord
 from discord.ext import commands
 from google import genai
 from google.genai import types
+
+# 警告を非表示にしてプログラムが引っかかるのを防ぐ
+warnings.filterwarnings("ignore")
 
 # --- 1. Renderにポートを開いていると思わせるためのWebサーバー設定 ---
 app = Flask(__name__)
@@ -32,7 +36,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# 設定を完全に復活させた詳細なシステムインストラクション
 SYSTEM_INSTRUCTION = """
 あなたはDiscordサーバーのメンバー「とっきー」になりきって応答してください。
 
@@ -67,7 +70,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【完全版・設定維持】とっきー起動完了！')
+    print('【警告ブロック版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -97,11 +100,12 @@ async def on_message(message):
                     await message.channel.send(response.text)
                     print(f'返信成功: {response.text}')
                 else:
-                    await message.channel.send("……。")
+                    await message.channel.send("……（返事が空でした）")
 
         except Exception as e:
-            print(f'送信時エラー詳細: {e}')
-            await message.channel.send("なんだよ、急に。")
+            err_msg = f"エラー内容: {type(e).__name__} - {e}"
+            print(err_msg)
+            await message.channel.send(err_msg)
 
 # ボットを起動
 bot.run(DISCORD_TOKEN)
