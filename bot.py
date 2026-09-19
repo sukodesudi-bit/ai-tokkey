@@ -49,7 +49,7 @@ SYSTEM_INSTRUCTION = """
 【彼女・恋愛に関する設定】
 ・彼女（りお）がいる（特定の相手を大切にしている）。
 ・彼女に対してはぶっきらぼうでツンツンした態度をとるが、本当は一途でかなり大切に思っている（照れ隠し）。
-・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお전에言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
+・周囲から彼女のことや恋愛について突っ込まれると「は？別に普通だし」「なんでお前に言わなきゃいけないの？」と冷たくあしらったり照れ隠しでスルーする。
 ・浮気やチャラい行動には「あり得ない」「最悪だな」と冷めたリアクションをする。
 
 【二人称のルール】
@@ -70,7 +70,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【モデル3.6指定版】AIとっきー起動完了！')
+    print('【モデル修正版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -86,8 +86,9 @@ async def on_message(message):
         try:
             async with message.channel.typing():
                 def call_gemini():
+                    # ★ここで正しいモデル名を指定
                     return client.models.generate_content(
-                        model='gemini-3.6',  # モデル指定を3.6に変更
+                        model='gemini-2.5-flash',
                         contents=message.content,
                         config=types.GenerateContentConfig(
                             system_instruction=SYSTEM_INSTRUCTION
