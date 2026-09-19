@@ -70,7 +70,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【モデル修正版】AIとっきー起動完了！')
+    print('【モデル3.6-flash指定版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -86,9 +86,8 @@ async def on_message(message):
         try:
             async with message.channel.typing():
                 def call_gemini():
-                    # ★ここで正しいモデル名を指定
                     return client.models.generate_content(
-                        model='gemini-2.5-flash',
+                        model='gemini-3.6-flash',  # 正しいモデル名に変更
                         contents=message.content,
                         config=types.GenerateContentConfig(
                             system_instruction=SYSTEM_INSTRUCTION
