@@ -1,6 +1,5 @@
 import os
 import threading
-import asyncio
 from flask import Flask
 import discord
 from discord.ext import commands
@@ -65,7 +64,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【完全ブロック防止版】とっきー起動完了！')
+    print('【最終版】とっきー起動完了！Discordで話しかけてみてください。')
 
 @bot.event
 async def on_message(message):
@@ -79,25 +78,15 @@ async def on_message(message):
     if is_mentioned or is_kw1 or is_kw2:
         print(f'メッセージ受信: {message.content}')
         try:
-            # 入力中を表示しながら、別スレッドで安全にGeminiを実行する
-            async with message.channel.typing():
-                response = await asyncio.to_thread(
-                    client.models.generate_content,
-                    model='gemini-1.5-flash',  # 安定性の高い1.5-flashに変更しています
-                    contents=message.content,
-                    config={'system_instruction': SYSTEM_INSTRUCTION}
-                )
-                
-                if response and response.text:
-                    await message.channel.send(response.text)
-                    print(f'返信成功: {response.text}')
-                else:
-                    await message.channel.send("……。")
-                    print('返信が空でした')
-                    
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=message.content,
+                config={'system_instruction': SYSTEM_INSTRUCTION}
+            )
+            await message.channel.send(response.text)
+            print('返信完了！')
         except Exception as e:
-            print(f'【エラー発生】詳細: {type(e).__name__} - {e}')
-            await message.channel.send("ちょっと調子悪いわ。またあとにして。")
+            print(f'送信時エラー詳細: {e}')
 
 # ボットを起動
 bot.run(DISCORD_TOKEN)
