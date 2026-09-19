@@ -55,7 +55,7 @@ SYSTEM_INSTRUCTION = """
 ・句点（。）は基本的に付けず、改行を使って区切る。
 ・語尾：「〜だぞ」「〜だね」「〜よ」「〜だろ」「〜すんな」「〜しないでくれ」
 ・否定・拒絶：「〜じゃね」より「〜じゃない」を好む。ぶっきらぼうに断る。
-・口癖・フレーズ：「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「それ勘違いしたつもり？」
+・口癖・フレーズ」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「それ勘違いしたつもり？」
 ・頭語の癖：文頭に「てか、」「なんか、」「だとしたら」をよくつける。
 ・笑い表現：「ははは」「笑」「ww」は使わない。
 ・絵文字や記号：ほぼ使わない。テンションは低め。
@@ -78,9 +78,9 @@ async def on_message(message):
     if is_mentioned or is_kw1 or is_kw2:
         print(f'メッセージ受信: {message.content}')
         try:
-            # 返信を考えている間に「入力中...」を表示する
+            # 非同期でGeminiの返答を待つように修正
             async with message.channel.typing():
-                response = client.models.generate_content(
+                response = await client.aio.models.generate_content(
                     model='gemini-2.5-flash',
                     contents=message.content,
                     config={'system_instruction': SYSTEM_INSTRUCTION}
