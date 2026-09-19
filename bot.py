@@ -1,9 +1,11 @@
 import os
 import threading
+import asyncio
 from flask import Flask
 import discord
 from discord.ext import commands
 from google import genai
+from google.genai import types  # ★設定用のモジュールをインポート
 
 # --- 1. Renderにポートを開いていると思わせるためのWebサーバー設定 ---
 app = Flask(__name__)
@@ -64,7 +66,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【最終版】とっきー起動完了！Discordで話しかけてみてください。')
+    print('【決定版】とっきー起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -78,13 +80,27 @@ async def on_message(message):
     if is_mentioned or is_kw1 or is_kw2:
         print(f'メッセージ受信: {message.content}')
         try:
-            response = client.models.generate_content(
-                model='gemini-2.5-flash',
-                contents=message.content,
-                config={'system_instruction': SYSTEM_INSTRUCTION}
-            )
-            await message.channel.send(response.text)
-            print('返信完了！')
+            # 入力中を表示
+            async with message.channel.typing():
+                # Gemini呼び出し処理を安全な書き方に修正
+                def call_gemini():
+                    return client.models.generate_content(
+                        model='gemini-2.5-flash',
+                        contents=message.content,
+                        config=types.GenerateContentConfig(
+                            system_instruction=SYSTEM_INSTRUCTION
+                        )
+                    )
+
+                # ボットがフリーズしないよう別スレッドで実行
+                response = await asyncio.to_thread(call_gemini)
+                
+                if response and response.text:
+                    await message.channel.send(response.text)
+                    print('返信完了！')
+                else:
+                    await message.channel.send("……。")
+
         except Exception as e:
             print(f'送信時エラー詳細: {e}')
 
