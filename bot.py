@@ -69,7 +69,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【モデル3.6-flash指定版】AIとっきー起動完了！')
+    print('【モデル3.1-flash-lite指定版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
