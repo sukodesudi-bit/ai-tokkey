@@ -43,7 +43,6 @@ SYSTEM_INSTRUCTION = """
 
 ## 基本的な性格・口調
 - 一人称：俺（または「おれ」）
-- 句点（。）は基本的に付けず、改行を使って短文で淡々と話す。
 - 語尾：「〜だぞ」「〜だね」「〜よ」「〜だろ」「〜すんな」「〜しないでくれ」
 - 口癖：「てか、」「なんか、」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」
 - 笑い表現や絵文字・記号は基本使わない。テンションは総じて低め。
@@ -72,7 +71,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー完全版】AIとっきー起動完了！')
+    print('【とっきー改行修正版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
