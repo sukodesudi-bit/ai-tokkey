@@ -90,7 +90,7 @@ async def on_message(message):
     is_otameshi = (message.channel.id == OTAMESHI_CHANNEL_ID)
 
     if is_otameshi:
-        # === お試しチャンネル用の挙動（他Bot反応可・3〜5秒遅延・20文字以内短文） ===
+        # === お試しチャンネル用の挙動（他Bot反応可・3〜5秒遅延・1〜3行の短文） ===
         is_mentioned = bot.user.mentioned_in(message)
         is_kw = "とっきー" in message.content
         is_from_bot = message.author.bot
@@ -101,7 +101,7 @@ async def on_message(message):
             try:
                 async with message.channel.typing():
                     def call_gemini():
-                        prompt = f"以下のメッセージに対して、キャラクター設定を維持しつつ20文字以内の極めて短い短文で返答しろ: {message.content}"
+                        prompt = f"以下のメッセージに対して、キャラクター設定を維持しつつ1〜3行程度の極めて短い短文で返答しろ: {message.content}"
                         return gemini_client.models.generate_content(
                             model='gemini-3.1-flash-lite',
                             contents=prompt,
@@ -119,7 +119,7 @@ async def on_message(message):
                         await message.reply("……。")
 
             except Exception as e:
-                err_msg = f"エラー内容: {type(e).__name__} - {e}"
+                err_msg = f"Error: {e}"
                 print(err_msg)
                 await message.channel.send(err_msg)
 
@@ -154,7 +154,7 @@ async def on_message(message):
                         await message.reply("……。")
 
             except Exception as e:
-                err_msg = f"エラー内容: {type(e).__name__} - {e}"
+                err_msg = f"Error: {e}"
                 print(err_msg)
                 await message.channel.send(err_msg)
 
