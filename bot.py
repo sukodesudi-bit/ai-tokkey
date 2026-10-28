@@ -30,7 +30,8 @@ threading.Thread(target=run_web).start()
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-client = genai.Client(api_key=GEMINI_API_KEY)
+# Geminiのクライアントは gemini_client に分ける（エラー防止）
+gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -71,12 +72,12 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー・他Bot対応版】AIとっきー起動完了！')
+    print('【とっきー・エラー修正版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
     # 自分自身のメッセージには絶対に反応しない（無限ループ防止）
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
     is_mentioned = bot.user.mentioned_in(message)
@@ -88,7 +89,7 @@ async def on_message(message):
         try:
             async with message.channel.typing():
                 def call_gemini():
-                    return client.models.generate_content(
+                    return gemini_client.models.generate_content(
                         model='gemini-3.1-flash-lite',
                         contents=message.content,
                         config=types.GenerateContentConfig(
