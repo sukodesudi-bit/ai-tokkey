@@ -48,6 +48,9 @@ SYSTEM_INSTRUCTION = """
 - 口癖：「てか、」「なんか、」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」
 - 笑い表現や絵文字・記号は基本使わない。テンションは総じて低め。
 
+## トピックの多様性について
+常に同じ話題や固定された文脈に固執せず、日々の些細な出来事や天気、ネットのくだらない噂や別のメンバーの動向など、幅広い日常の話題に柔軟に言及すること。
+
 ## ネッ友（サーバーメンバー）に対する本音・関係性
 
 - **はげに対して：**
@@ -69,10 +72,13 @@ SYSTEM_INSTRUCTION = """
   - 特別な感情は一切なく「限りなく普通」の奴だと思っていて、特に気負わず対等に接している。
 """
 
+# お試しチャンネルのID
+OTAMESHI_CHANNEL_ID = 1564984415636037672
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー・返信対応版】AIとっきー起動完了！')
+    print('【とっきー・完全版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -80,45 +86,77 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    # 1. メンション判定
-    is_mentioned = bot.user.mentioned_in(message)
+    # お試しチャンネルかどうかを判定
+    is_otameshi = (message.channel.id == OTAMESHI_CHANNEL_ID)
 
-    # 2. リプライ判定（とっきーBotに対するリプライか）
-    is_reply_to_bot = False
-    if message.reference and message.reference.resolved:
-        if message.reference.resolved.author == bot.user:
-            is_reply_to_bot = True
+    if is_otameshi:
+        # === お試しチャンネル用の挙動（他Bot反応可・3〜5秒遅延・20文字以内短文） ===
+        is_mentioned = bot.user.mentioned_in(message)
+        is_kw = "とっきー" in message.content
+        is_from_bot = message.author.bot
 
-    # 3. キーワード判定
-    is_kw1 = "とっきー" in message.content
-
-    # メンション、リプライ、または「とっきー」という名前が含まれていれば反応する
-    if is_mentioned or is_reply_to_bot or is_kw1:
-        print(f'メッセージ受信: {message.content}')
-        try:
-            async with message.channel.typing():
-                def call_gemini():
-                    return gemini_client.models.generate_content(
-                        model='gemini-3.1-flash-lite',
-                        contents=message.content,
-                        config=types.GenerateContentConfig(
-                            system_instruction=SYSTEM_INSTRUCTION
+        if is_mentioned or is_kw or is_from_bot:
+            print(f'お試しチャンネルメッセージ受信: {message.content}')
+            await asyncio.sleep(4)  # 4秒の遅延
+            try:
+                async with message.channel.typing():
+                    def call_gemini():
+                        prompt = f"以下のメッセージに対して、キャラクター設定を維持しつつ20文字以内の極めて短い短文で返答しろ: {message.content}"
+                        return gemini_client.models.generate_content(
+                            model='gemini-3.1-flash-lite',
+                            contents=prompt,
+                            config=types.GenerateContentConfig(
+                                system_instruction=SYSTEM_INSTRUCTION
+                            )
                         )
-                    )
 
-                response = await asyncio.to_thread(call_gemini)
-                
-                if response and hasattr(response, 'text') and response.text:
-                    # 通常のsendではなく reply を使うことで相手に返信する形にする
-                    await message.reply(response.text)
-                    print(f'返信成功: {response.text}')
-                else:
-                    await message.reply("……。")
+                    response = await asyncio.to_thread(call_gemini)
+                    
+                    if response and hasattr(response, 'text') and response.text:
+                        await message.reply(response.text)
+                        print(f'お試し返信成功: {response.text}')
+                    else:
+                        await message.reply("……。")
 
-        except Exception as e:
-            err_msg = f"エラー内容: {type(e).__name__} - {e}"
-            print(err_msg)
-            await message.channel.send(err_msg)
+            except Exception as e:
+                err_msg = f"エラー内容: {type(e).__name__} - {e}"
+                print(err_msg)
+                await message.channel.send(err_msg)
+
+    else:
+        # === 通常チャンネル（リビング等）用の挙動（他Bot完全無視・ユーザーのみ・遅延なし長文即レス） ===
+        if message.author.bot:
+            return
+
+        is_mentioned = bot.user.mentioned_in(message)
+        is_kw = "とっきー" in message.content
+
+        if is_mentioned or is_kw:
+            print(f'通常チャンネルメッセージ受信: {message.content}')
+            try:
+                async with message.channel.typing():
+                    def call_gemini():
+                        prompt = f"以下のメッセージに対して、キャラクター設定を維持しつつ詳細かつ多角的に長文で返答しろ: {message.content}"
+                        return gemini_client.models.generate_content(
+                            model='gemini-3.1-flash-lite',
+                            contents=prompt,
+                            config=types.GenerateContentConfig(
+                                system_instruction=SYSTEM_INSTRUCTION
+                            )
+                        )
+
+                    response = await asyncio.to_thread(call_gemini)
+                    
+                    if response and hasattr(response, 'text') and response.text:
+                        await message.reply(response.text)
+                        print(f'通常返信成功: {response.text}')
+                    else:
+                        await message.reply("……。")
+
+            except Exception as e:
+                err_msg = f"エラー内容: {type(e).__name__} - {e}"
+                print(err_msg)
+                await message.channel.send(err_msg)
 
 # ボットを起動
 bot.run(DISCORD_TOKEN)
