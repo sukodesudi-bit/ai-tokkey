@@ -71,16 +71,18 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー改行修正版】AIとっきー起動完了！')
+    print('【とっきー・他Bot対応版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
-    if message.author.bot:
+    # 自分自身のメッセージには絶対に反応しない（無限ループ防止）
+    if message.author == client.user:
         return
 
     is_mentioned = bot.user.mentioned_in(message)
     is_kw1 = "とっきー" in message.content
 
+    # メンションされるか「とっきー」という名前が含まれていれば、他のBot（はげbot等）のメッセージであっても反応する
     if is_mentioned or is_kw1:
         print(f'メッセージ受信: {message.content}')
         try:
