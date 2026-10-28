@@ -30,7 +30,7 @@ threading.Thread(target=run_web).start()
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# Geminiのクライアントは gemini_client に分ける（エラー防止）
+# Geminiのクライアントは gemini_client に分ける
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 intents = discord.Intents.default()
@@ -72,7 +72,7 @@ SYSTEM_INSTRUCTION = """
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー・エラー修正版】AIとっきー起動完了！')
+    print('【とっきー・返信対応版】AIとっきー起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -80,11 +80,20 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
+    # 1. メンション判定
     is_mentioned = bot.user.mentioned_in(message)
+
+    # 2. リプライ判定（とっきーBotに対するリプライか）
+    is_reply_to_bot = False
+    if message.reference and message.reference.resolved:
+        if message.reference.resolved.author == bot.user:
+            is_reply_to_bot = True
+
+    # 3. キーワード判定
     is_kw1 = "とっきー" in message.content
 
-    # メンションされるか「とっきー」という名前が含まれていれば、他のBot（はげbot等）のメッセージであっても反応する
-    if is_mentioned or is_kw1:
+    # メンション、リプライ、または「とっきー」という名前が含まれていれば反応する
+    if is_mentioned or is_reply_to_bot or is_kw1:
         print(f'メッセージ受信: {message.content}')
         try:
             async with message.channel.typing():
@@ -100,10 +109,11 @@ async def on_message(message):
                 response = await asyncio.to_thread(call_gemini)
                 
                 if response and hasattr(response, 'text') and response.text:
-                    await message.channel.send(response.text)
+                    # 通常のsendではなく reply を使うことで相手に返信する形にする
+                    await message.reply(response.text)
                     print(f'返信成功: {response.text}')
                 else:
-                    await message.channel.send("……。")
+                    await message.reply("……。")
 
         except Exception as e:
             err_msg = f"エラー内容: {type(e).__name__} - {e}"
