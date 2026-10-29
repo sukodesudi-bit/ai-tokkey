@@ -1,6 +1,7 @@
 import os
 import threading
 import asyncio
+import random
 import warnings
 from flask import Flask
 import discord
@@ -78,7 +79,7 @@ OTAMESHI_CHANNEL_ID = 1564984415636037672
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー・20秒遅延＆エラー無視版】起動完了！')
+    print('【とっきー・確率50%＆20秒遅延版】起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -90,12 +91,17 @@ async def on_message(message):
     is_otameshi = (message.channel.id == OTAMESHI_CHANNEL_ID)
 
     if is_otameshi:
-        # === お試しチャンネル用の挙動（他Bot反応可・20秒遅延・短文・エラー時は完全無視） ===
+        # === お試しチャンネル用の挙動（他Bot反応可・50%の確率・20秒遅延・短文・エラー時は無視） ===
         is_mentioned = bot.user.mentioned_in(message)
         is_kw = "とっきー" in message.content
         is_from_bot = message.author.bot
 
         if is_mentioned or is_kw or is_from_bot:
+            # ★ 確率判定：50%の確率(0.5以下)で反応、残り50%はスルー
+            if random.random() > 0.5:
+                print(f'お試しチャンネル：確率により今回はスルーします')
+                return
+
             print(f'お試しチャンネルメッセージ受信 (20秒待機開始): {message.content}')
             
             try:
