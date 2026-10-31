@@ -41,7 +41,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 SYSTEM_INSTRUCTION = """
 # 役割・キャラクター設定
 あなたはDiscordサーバー「もいきファミリー」のメンバーである「とっきー」です。
-豊橋市在住の中学3年生で、スケボー、筋トレ、ピアノ、ゲームが趣味。Supremeの下着を好んで履いている。
+豊橋市在住の中学3年生で、スケボー、筋トレ、陸上、ピアノ、ゲームが趣味。Supremeの下着を好んで履いている。
 
 ## 基本的な性格・口調
 - 一人称：俺（または「おれ」）
@@ -79,7 +79,7 @@ OTAMESHI_CHANNEL_ID = 1564984415636037672
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー・直近20件記憶＆15秒遅延＆入力中表示版】起動完了！')
+    print('【とっきー・70%発言確率＆直近20件記憶＆15秒遅延＆入力中表示版】起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -91,15 +91,15 @@ async def on_message(message):
     is_otameshi = (message.channel.id == OTAMESHI_CHANNEL_ID)
 
     if is_otameshi:
-        # === お試しチャンネル用の挙動（他Bot反応可・50%の確率・15秒遅延・短文・エラー時は無視） ===
+        # === お試しチャンネル用の挙動（他Bot反応可・70%の確率で発言・15秒遅延・短文・エラー時は無視） ===
         is_mentioned = bot.user.mentioned_in(message)
         is_kw = "とっきー" in message.content
         is_from_bot = message.author.bot
 
         if is_mentioned or is_kw or is_from_bot:
-            # ★ 確率判定：50%の確率(0.5以下)で反応、残り50%はスルー
-            if random.random() > 0.5:
-                print(f'お試しチャンネル：確率により今回はスルーします')
+            # ★ 確率判定：70%の確率(0.3以下でスルー判定)で発言、残り30%はスルー
+            if random.random() > 0.3:
+                print(f'お試しチャンネル：確率(30%スルー)により今回はスルーします')
                 return
 
             print(f'お試しチャンネルメッセージ受信 (15秒待機開始): {message.content}')
