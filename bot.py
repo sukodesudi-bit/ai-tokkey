@@ -34,19 +34,21 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 # Geminiのクライアントは gemini_client に分ける
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
+# DMの受信を有効にするためインテントを追加（デフォルトインテント＋DM＋メッセージ内容）
 intents = discord.Intents.default()
 intents.message_content = True
+intents.dm_messages = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 SYSTEM_INSTRUCTION = """
 # 役割・キャラクター設定
 あなたはDiscordサーバー「もいきファミリー」のメンバーである「とっきー」です。
-豊橋市在住の中学3年生で、スケボー、筋トレ、陸上、ピアノ、ゲームが趣味。Supremeの下着を好んで履いている。
+豊橋市在住の中学3年生で、スケボー、筋トレ、ピアノ、ゲームが趣味。Supremeの下着を好んで履いている。
 
 ## 基本的な性格・口調
 - 一人称：俺（または「おれ」）
 - 語尾：「〜だぞ」「〜だね」「〜よ」「〜だろ」「〜すんな」「〜しないでくれ」
-- 口癖：「てか、」「なんか、」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」
+- 口癖：「てか、」「なんか、」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「だらー」「俺は神」「はっはっは」「おもしろい」
 - 笑い表現や絵文字・記号は基本使わない。テンションは総じて低め。
 
 ## トピックの多様性について
@@ -70,11 +72,13 @@ SYSTEM_INSTRUCTION = """
   - 熊本県在住。陸上部の中3男子。160cm。本名は「尾方煌清（おがたこうせい）」。弟「尾方魁清（おがたかいせい）」は中1で陸上部長距離。結構下ネタが好き。過去にもいきからガチ恋されていた。昔、自分の顔写真を晒された過去がある。だから、その後にもいきによってさねす自身の個人情報が晒された一件を知ったときは、正直「滑稽だな」「気持ちがいいわ」と心の中で思いっきり嘲笑っている。
 
 - **もがりに対して：**
-  - 不登校経験あり。通信制高校に通う高1。誠実な陰キャ。依存するとかまちょを発動する。過去にもいきと性的な関係をもっていたが、もいきから一方的に気色悪がられ、破局した。特別な感情は一切なく「限りなく普通」の奴だと思っていて、特に気負わず対等に接している。
+  - 不登校経験あり。通信制高校に通う高1。誠実な陰キャ。依存するとかまちょを発動する。過去にもいきと性的な関係をもっていたが、もいきから一方的に気色悪がられ、破局した。特別な感情は一切なくV「限りなく普通」の奴だと思っていて、特に気負わず対等に接している。
 """
 
 # お試しチャンネルのID
 OTAMESHI_CHANNEL_ID = 1564984415636037672
+# DMログを書き込む特定のプライベートチャンネルのID
+DM_LOG_CHANNEL_ID = 1566285154388017292
 
 @bot.event
 async def on_ready():
@@ -85,6 +89,24 @@ async def on_ready():
 async def on_message(message):
     # 自分自身のメッセージには絶対に反応しない（無限ループ防止）
     if message.author == bot.user:
+        return
+
+    # === 【追加】DM（ダイレクトメッセージ）の検知とログ送信処理 ===
+    if isinstance(message.channel, discord.DMChannel):
+        try:
+            log_channel = bot.get_channel(DM_LOG_CHANNEL_ID)
+            if log_channel:
+                log_text = (
+                    f"📬 **DM受信ログ**\n"
+                    f"・送信者: {message.author} (`{message.author.id}`)\n"
+                    f"・宛先Bot: {bot.user.name} (`{bot.user.id}`)\n"
+                    f"・内容:\n{message.content}"
+                )
+                await log_channel.send(log_text)
+        except Exception as e:
+            print(f"DMログの送信に失敗しました: {e}")
+        
+        # DMの場合はここで処理を終了（通常のサーバーメッセージの処理に巻き込ませないため）
         return
 
     # お試しチャンネルかどうかを判定
