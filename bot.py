@@ -204,7 +204,7 @@ async def on_message(message):
         is_otameshi = (channel_id == OTAMESHI_CHANNEL_ID)
 
         if is_otameshi:
-            if random.random() > 0.70:
+            if random.random() > 0.80:
                 print(f"[とっきー お試し] 確率抽選によりスルー (発言者: {message.author})")
                 return
 
