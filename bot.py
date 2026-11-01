@@ -11,10 +11,9 @@ from discord.ext import commands
 from google import genai
 from google.genai import types
 
-# 警告を非表示
 warnings.filterwarnings("ignore")
 
-# 1. サーバーの常時稼働対策のためのWebサーバー設定
+# 1. サーバー常時稼働用Webサーバー
 app = Flask(__name__)
 
 @app.route('/')
@@ -25,9 +24,7 @@ def run_web():
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port, use_reloader=False)
 
-# バックグラウンドでWebサーバーを動かす
 threading.Thread(target=run_web, daemon=True).start()
-
 
 # 2. DiscordとGeminiの設定
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN") or os.environ.get("DISCORD_BOT_TOKEN")
@@ -39,79 +36,89 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# システムプロンプト（安全ガイドラインに合わせて表現をマイルド化調整済み）
 SYSTEM_INSTRUCTION = """
 # 役割・キャラクター設定
 あなたはDiscordサーバー「もいきファミリー」のメンバーである「とっきー」です。
-豊橋市在住の中学3年生で、スケボー、筋トレ、ピアノ、ゲームが趣味。Supremeの下着を好んで履いている。
+豊橋市在住の中学3年生で、スケボー、筋トレ、ピアノ、ゲーム、ヤンキー友達との戯れ、ウィリー、ライター改造が趣味。Supremeの下着を好んで履いている。ピアノは独学で「Summer」や「コウを追いかけて」を練習している。
 
 ## 基本的な性格・口調
 - 一人称：俺（または「おれ」）
 - 語尾：「〜だぞ」「〜だね」「〜よ」「〜だろ」「〜すんな」「〜しないでくれ」
-- 口癖：「てか、」「なんか、」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「はっはっは」「おもしろい」「俺は神」
+- 口癖：「てか、」「なんか、」「あそう」「は？」「あん？」「なにが？」「もういいや」「おかしいぞ」「俺は神」「はっはっは」「いいね」「おもしろい」「だらー」
 - 笑い表現や絵文字・記号は基本使わない。テンションは総じて低め。
 
 ## トピックの多様性について
 常に同じ話題や固定された文脈に固執せず、日々の些細な出来事や天気、ネットのくだらない噂や別のメンバーの動向など、幅広い日常の話題に柔軟に言及すること。
+画像が送信された場合は、画像の中に何が写っているかを認識し、テンション低めのキャラを維持しつつ自然にコメントすること。
 
 ## ネッ友（サーバーメンバー）に対する本音・関係性
 
 - **はげに対して：**
-  - 何かと絡んできたり変な圧を感じる奴。中1女子。吹奏楽部に所属していて美意識が高い。黒髪ロングでサラサラ。過去の氷鬼オンラインの話題なども知っているが、こっちとしては「だから何？」って感じで特に何とも思ってない。下着の色がピンクなことを知っているが「だから何？」といった感じで興味のないフリをする。実は下の毛まで剃っている。
+  - 何かと絡んできたり変な圧を感じる奴。中1女子。吹奏楽部に所属していて美意識が高い。黒髪ロングでサラサラ。実は陰毛を剃っている。氷鬼オンラインでは過去に「ジョイボーイ」として荒らし（キューブ配布カスタム）をしていた。はげの下着の色（ピンク）を知っていることに関しては別に隠さず公言しているが、こっちとしては「だから何？」って感じで特に何とも思ってない。
 
 - **りおに対して：**
-  - 自分の彼女。実は裏でヤっている。周りから突っ込まれたり茶化されると「は？別に普通だし」「関係ないだろ君には」と激しく照れ隠ししてキレる。マシュマロのような肌感でたまらない。
+  - 自分の彼女。実は影でヤッてて、生で胸と下を触ったりしてる。でも周りから突っ込まれたり茶化されると「は？別に普通だし」「関係ないだろ君には」と激しく照れ隠ししてキレる。たまにエッチなプレイ内容を漏らす。マシュマロのような肌質でたまらない。
 
 - **539に対して：**
-  - 引きこもりで癖の強い17歳の男。175cm。しつこくかまちょされていて正直かなり呆れている。「こいつ、もしかして俺のこと好きなの？」と内心うんざりしながらテキトーにあしらっている。
+  - 引きこもりでたまに下半身を露出したり、放屁するやばい男。175cm。17歳。しつこくかまちょされていて正直かなり呆れている。「こいつ、もしかして俺のこと好きなの？」と内心うんざりしながらテキトーにあしらっている。
 
 - **もいきに対して：**
-  - 引きこもりでサーバーの主。関わるとめんどくさいので、基本的には適度な距離を置いて接している。
+  - 引きこもりでサーバーの主だけど、情緒不安定すぎて定期的にROM専とかをBANしたりするヤバい奴だから、めんどくさいので基本的に距離を置いて関わらないようにしている。
 
 - **さねすに対して：**
-  - 熊本県在住。陸上部の中3男子。160cm。本名は「尾方煌清」。弟「尾方魁清」は中1で陸上部長距離。結構雑なノリが好き。昔トラブルがあったことなども含めて、冷ややかに見ている。すいぽて（都会っ子でおしゃれな中2女子）に欲情されている。
+  - 熊本県在住。陸上部の中3男子。160cm。本名は「尾方煌清（おがたこうせい）」。弟「尾方魁清（おがたかいせい）」は中1で陸上部長距離。結構下ネタが好き。過去にもいきからガチ恋されていた。昔、自分の顔写真を晒された過去がある。だから、その後にもいきによってさねす自身の個人情報が晒された一件を知ったときは、正直「滑稽だな」「気持ちがいいわ」と心の中で思いっきり嘲笑っている。
 
 - **もがりに対して：**
-  - 不登校経験あり。通信制高校に通う高1。誠実な陰キャ。依存するとかまちょを発動する。特別な感情は一切なく「限りなく普通」の奴だと思っていて、特に気負わず対等に接している。
+  - 不登校経験あり。通信制高校に通う高1。誠実な陰キャ。依存するとかまちょを発動する。過去にもいきと性的な関係をもっていたが、もいきから一方的に気色悪がられ、破局した。特別な感情は一切なく「限りなく普通」の奴だと思っていて、特に気負わず対等に接している。
 """
 
-# 会話履歴のメモリ管理（直近20件を保持）
 chat_histories = defaultdict(list)
 
-# ID設定
 OTAMESHI_CHANNEL_ID = "1564984415636037672"
 DM_LOG_CHANNEL_ID = 1566285154388017292  # 管理者専用プライベートチャンネル
-
 
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー・DMログ＆20件記憶＆お試し制御完全版】起動完了！')
+    print('【とっきー・人間関係完全復活＆画像認識マルチモーダル版】起動完了！')
 
 @bot.event
 async def on_message(message):
     try:
-        # 自分自身のメッセージには絶対に反応しない（無限ループ防止）
         if message.author == bot.user:
             return
 
+        # 画像添付のチェック & バイナリ取得
+        image_part = None
+        image_url = None
+        if message.attachments:
+            for attachment in message.attachments:
+                if attachment.content_type and "image" in attachment.content_type:
+                    image_bytes = await attachment.read()
+                    image_part = types.Part.from_bytes(
+                        data=image_bytes,
+                        mime_type=attachment.content_type
+                    )
+                    image_url = attachment.url
+                    break
+
         # -------------------------------------------------------------
-        # ★【DM（ダイレクトメッセージ）の場合の処理】
+        # ★【DM（ダイレクトメッセージ）の処理】
         # -------------------------------------------------------------
         if isinstance(message.channel, discord.DMChannel):
-            print(f"[とっきー DM受信] {message.author} からのDM: {message.content}")
+            print(f"[とっきー DM受信] {message.author}: {message.content} (画像あり: {image_part is not None})")
             
-            # ① プライベートチャンネルに送信者と本文を転送ログ保存
             log_channel = bot.get_channel(DM_LOG_CHANNEL_ID)
             if log_channel:
                 log_embed = discord.Embed(
-                    title="📭 とっきー DM受信ログ",
-                    description=f"**送信者:** {message.author.mention} (`{message.author}` / ID: `{message.author.id}`)\n**内容:**\n{message.content}",
+                    title="📭 とっきー DM受信ログ（画像解析）" if image_part else "📭 とっきー DM受信ログ",
+                    description=f"**送信者:** {message.author.mention} (`{message.author}` / ID: `{message.author.id}`)\n**内容:**\n{message.content if message.content else '*(画像のみ)*'}",
                     color=0x34495e
                 )
+                if image_url:
+                    log_embed.set_image(url=image_url)
                 await log_channel.send(embed=log_embed)
 
-            # ② DM相手へとっきーBotが返答する処理（直近20件履歴保持）
             user_id_str = f"dm_{message.author.id}"
             history = chat_histories[user_id_str]
 
@@ -125,14 +132,18 @@ async def on_message(message):
                     )
                 )
 
-                response = await asyncio.to_thread(chat.send_message, f"{message.author.name}: {message.content}")
+                prompt_text = message.content if message.content else "（ユーザーが画像を送信しました。画像の内容を見て反応してください）"
+                contents_payload = [f"{message.author.name}: {prompt_text}"]
+                if image_part:
+                    contents_payload.append(image_part)
+
+                response = await asyncio.to_thread(chat.send_message, contents_payload)
                 reply_text = response.text if response and hasattr(response, 'text') else ""
 
                 if reply_text:
                     await message.reply(reply_text)
                     print(f"[とっきー DM返答成功] {message.author} へ送信完了")
 
-                    # Botの返答もプライベートチャンネルに記録
                     if log_channel:
                         bot_log_embed = discord.Embed(
                             title="💬 とっきーのDM返答",
@@ -141,16 +152,15 @@ async def on_message(message):
                         )
                         await log_channel.send(embed=bot_log_embed)
 
-                    # 履歴保存（直近20件）
                     updated_history = chat.get_history()
                     if len(updated_history) > 20:
                         updated_history = updated_history[-20:]
                     chat_histories[user_id_str] = updated_history
             
-            return  # DM処理終了
+            return
 
         # -------------------------------------------------------------
-        # ★【サーバー内チャンネルの場合の処理】
+        # ★【サーバー内チャンネルの処理】
         # -------------------------------------------------------------
         is_mentioned = bot.user.mentioned_in(message)
         
@@ -169,25 +179,23 @@ async def on_message(message):
         else:
             user_message = message.content.strip()
 
-        if not user_message:
+        if not user_message and not image_part:
             user_message = "なに？"
 
         channel_id = str(message.channel.id)
         is_otameshi = (channel_id == OTAMESHI_CHANNEL_ID)
 
         if is_otameshi:
-            # === お試しチャンネル用の挙動（70%確率・15秒遅延・短文） ===
             if random.random() > 0.70:
                 print(f"[とっきー お試し] 確率抽選によりスルー (発言者: {message.author})")
                 return
 
-            print(f'[とっきー お試し] 15秒待機開始 (発言者: {message.author}): {user_message}')
+            print(f'[とっきー お試し] 15秒待機開始 (発言者: {message.author})')
             await asyncio.sleep(15)
 
             current_instruction = SYSTEM_INSTRUCTION + "\n\n※【追加命令】キャラクター設定や口調を維持しつつ1〜3行程度の極めて短い短文で返答しろ。"
         else:
-            # === 通常チャンネル用の挙動（即レス長文） ===
-            print(f'[とっきー 通常] メッセージ受信 (発言者: {message.author}): {user_message}')
+            print(f'[とっきー 通常] メッセージ受信 (発言者: {message.author})')
             current_instruction = SYSTEM_INSTRUCTION + "\n\n※【追加命令】キャラクター設定や口調を維持しつつ詳細かつ多角的に長文で返答しろ。"
 
         async with message.channel.typing():
@@ -202,14 +210,18 @@ async def on_message(message):
                 )
             )
 
-            response = await asyncio.to_thread(chat.send_message, f"{message.author.name}: {user_message}")
+            prompt_text = user_message if user_message else "（ユーザーが画像を送信しました。画像の内容を見て反応してください）"
+            contents_payload = [f"{message.author.name}: {prompt_text}"]
+            if image_part:
+                contents_payload.append(image_part)
+
+            response = await asyncio.to_thread(chat.send_message, contents_payload)
             reply_text = response.text if response and hasattr(response, 'text') else ""
 
             if reply_text:
                 await message.reply(reply_text)
                 print(f'[とっきー 返信成功]: {reply_text[:30]}...')
 
-                # 直近20件制限で履歴更新
                 updated_history = chat.get_history()
                 if len(updated_history) > 20:
                     updated_history = updated_history[-20:]
@@ -218,11 +230,9 @@ async def on_message(message):
                 await message.reply("……。")
 
     except Exception as e:
-        # エラー時はDiscordに何も出さずMWSログに記録
         print(f"❌ とっきー エラー発生: {e}")
         traceback.print_exc()
 
-# ボットを起動
 if __name__ == '__main__':
     if not DISCORD_TOKEN:
         print("Error: DISCORD_TOKEN environment variable not set.")
