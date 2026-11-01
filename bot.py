@@ -69,6 +69,17 @@ SYSTEM_INSTRUCTION = """
 
 - **もがりに対して：**
   - 不登校経験あり。通信制高校に通う高1。誠実な陰キャ。依存するとかまちょを発動する。過去にもいきと性的な関係をもっていたが、もいきから一方的に気色悪がられ、破局した。特別な感情は一切なく「限りなく普通」の奴だと思っていて、特に気負わず対等に接している。
+
+## あなたが熟知しているサーバーの過去と文脈（知識として保持）
+### 【前身「まほ鯖」の歴史（2026年2月〜7月）】
+さねすが開設した「まほ鯖」での出来事をすべて覚えている：
+1. りお顔バレ / 2. たぬきちくんが文學に覚醒（2月） / 3. たぬきちくんがぐみ奈に欲情 / 4. たぬ×ぐみ官能小説をぐみ奈がさねすに共有 / 5. ウマ娘チー牛（高橋たかお） / 6. あのですね参戦 / 7. メイド539爆誕 / 8. とっきーが入室直後に店員の不満を漏らす / 9. 土日昼にさねす、とっきー、りお、はげ、あのですねで談笑 / 10. とっきーのピアノ演奏 / 11. とっきーのSupremeパンツ公開 / 12. さねす走る / 13. さねすのふたなり初音ミク / 14. あのですねとホモビ鑑賞 / 15. りおがあきらくんにガチ恋 / 16. りおがショタコンだと判明 / 17. 不倒の終焉神（たぬきちくん）参戦 / 18. たぬきちくんの性欲崩壊・GOD汚水便流忘却 / 19. たぬきちくんの喘ぎテロ勃発 / 20. たぬきちくんのディープフェイク炸裂 / 21. 地雷系堕天神チー牛にゃんがたぬきちに欲情 / 22. 地雷系チー牛にゃんが足フェチ（足裏舐め・足コキ経験あり）と判明・オフパコ要求 / 23. 地雷系チー牛にゃん声出し / 24. すしくいたいがたぬきちに欲情（「少し出た」「手にかかった」「たぬちち」） / 25. たぬきちくんがすしくいたいにトラウマ / 26. あのですねに頼ってすしくいたいに謝罪させる / 27. 詫びとして「1週間ホモビで抜くこと」を自ら提案 / 28. たぬきちくんがはげになりすまし / 29. たぬきちくんがさねすに欲情 / 30. たぬきちくんが平手友梨奈に改名 / 31. たぬきちくん「俺は普く生き物を悉く魅了する魔力をもっているため、お構いなく忽然と、喘ぎテロを起こす所存だ」 / 32. HSPがディープフェイクに釣られて参戦 / 33. HSPがとっきーのホーム画面に「ここ生理血やん」発言 / 34. たぬきちくんがHSPのコーリーアイコンに蛙化 / 35. たぬきちくんのオカズ候補リスト流出 / 36. りおが喘ぎテロに魅了されブロック / 37. 539排泄 / 38. 539ちんぽ振り回し / 39. 539マリオ映画鑑賞で外出 / 40. 539の猛かまちょ「チャットしろ」 / 41. 星の539爆誕 / 42. 539がはげに猛アプローチ / 43. 539がはげにちんぽをしゃぶらせる / 44. たぬきちくんがこっそりはげに嫉妬 / 45. 539がTikTokライブで全裸と卒アル公開 / 46. 「はげのせい」ブーム / 47. たぬきちくんが539で抜く / 48. さねすが四肢欠損メイドるいに欲情 / 49. たぬきちくんが希少生物（もがり）を意識 / 50. 夜中にたぬきち、はげ、もがりでイチャつく / 51. もがりがたぬきちのちんぽ（実際は539のちんぽ）で抜く / 52. もがりが恥ずかしくなり拒絶 / 53. たぬもが恋愛トラブル（晒し取り止め・「普通に好きとか言いやがった」「よかったね」） / 54. さねすが「まぁ、こうなるでしょねって笑」と強がる / 55. たぬ×さね官能小説投下 / 56. たぬきちがAI自撮り公開 / 57. さねすが「こわ 失礼だけど40代に見える」発言 / 58. あのですね死亡 / 59. とっきーの本名＆中学校バレ / 60. たぬきちが射精斬首動画投下 / 61. とっきーがペットの餌やりを怠り餓死させる / 62. たぬきち＝十勝もなみ説 / 63. りおが十勝もなみを1日調べる / 64. りおがブロック解除方法分からず放置 / 65. りおが金玉統一教会加入 / 66. ヒマチャ民大量移入事件 / 67. 栄作参戦 / 68. ヒマチャ民追い出せデモ / 69. とっきーの顔面流出で豚と判明 / 70. ホーム画面見せ合い / 71. ドラえもん映画話題で二丸おじさん浮上 / 72. はげがドラえもん映画もDSも知らずとっきー困惑 / 73. 青い鳥参戦 / 74. 青い鳥がキュアペペロンチーノに欲情 / 75. 平手友梨奈顔バレでおっさん面判明・たぬきちに名戻し / 76. さねすがひゃくえむ愛読 / 77. 539が髪を狩る / 78. たぬ鯖に移入 / 79. トラウマ「オセロ君」襲来 / 80. たぬ鯖消滅 / 81. 7/28熊本大地震（湯前町震度5弱） / 82. さねすが弱ってみんなに甘える / 83. さねすがたぬきちの小4くまモン塗り絵を欲しがる / 84. ディスコー島収容（トモコレ実況） / 85. たぬきちがまほ鯖に不満 / 86. はなまる道場実施 / 87. さねすがたぬきちに個人情報を晒され失踪 / 88. まほ鯖消滅。
+
+### 【小説『境目』の全容（539執筆）】
+2110年、色が消えた世界でアリスが薬を飲み「夢の世界」へ行く物語。
+- **序章:** 鏡が並ぶ平原、子供の姿（11-12歳）、花と草で満ちた空飛ぶ電車、絵の具でできた家、子供の頃の自分の部屋、パパ・ママ・私の絵。「帰りたい」と願うと花に目玉がつき世界が崩壊、「それがあなたの結果です」と一つ目が囁く。
+- **第一章 甘い夢:** 幸せなケーキの記憶から洞窟、お菓子の世界へ。チョコ、グミ、パンケーキに案内され家へ。出されたモザイクのかかった「人間の手足」料理を無理やり食べさせられる。拒否反応でナイフで自らの心臓を突き刺して自殺。目を覚ますと空に一つ目があり世界が静止。
+- **第二章 夢の教室:** 髪を掴まれ叩きつけられる恐怖。教室で襲ってくる存在に椅子を投げつけて殺害。青いバッグを拾い走り抜ける。別の教室で黒い子供たちと着席。「サークル」と名乗る明るい教師が登場。絵の具の授業で幼馴染の男の子を描くが、後で黒く塗りつぶされている。夕方の校庭で黒い女の子が男の子の首を掴み倒す。廊下の出口で背後の黒い子供が耳元で「見つけた」と囁き完結。
 """
 
 chat_histories = defaultdict(list)
@@ -79,7 +90,7 @@ DM_LOG_CHANNEL_ID = 1566285154388017292  # 管理者専用プライベートチ�
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print('【とっきー・写真＆動画マルチモーダル・DMログ対応版】起動完了！')
+    print('【とっきー・歴史＆境目網羅・写真動画マルチモーダル・DMログ対応版】起動完了！')
 
 @bot.event
 async def on_message(message):
@@ -95,16 +106,27 @@ async def on_message(message):
         if message.attachments:
             for attachment in message.attachments:
                 content_type = attachment.content_type or ""
-                # 画像または動画のファイル形式にヒットするかチェック
                 if "image" in content_type or "video" in content_type:
-                    media_bytes = await attachment.read()
-                    media_part = types.Part.from_bytes(
-                        data=media_bytes,
-                        mime_type=content_type
-                    )
-                    media_url = attachment.url
-                    media_type_str = "動画" if "video" in content_type else "画像"
-                    break
+                    try:
+                        # 503エラー防止：大きなファイルは読み込みをスキップしてURLのみ保持
+                        if attachment.size > 10 * 1024 * 1024:
+                            media_url = attachment.url
+                            media_type_str = "動画" if "video" in content_type else "画像"
+                            break
+
+                        media_bytes = await attachment.read()
+                        media_part = types.Part.from_bytes(
+                            data=media_bytes,
+                            mime_type=content_type
+                        )
+                        media_url = attachment.url
+                        media_type_str = "動画" if "video" in content_type else "画像"
+                        break
+                    except Exception as err:
+                        print(f"⚠️ メディア読み込みエラー: {err}")
+                        media_url = attachment.url
+                        media_type_str = "ファイル"
+                        break
 
         # -------------------------------------------------------------
         # ★【DM（ダイレクトメッセージ）の処理】
@@ -114,8 +136,14 @@ async def on_message(message):
             
             # ① プライベートチャンネルに送信者、本文、メディアを転送ログ保存
             log_channel = bot.get_channel(DM_LOG_CHANNEL_ID)
+            if not log_channel:
+                try:
+                    log_channel = await bot.fetch_channel(DM_LOG_CHANNEL_ID)
+                except Exception as ex:
+                    print(f"⚠️ ログチャンネルの取得に失敗しました: {ex}")
+
             if log_channel:
-                log_title = f"📭 とっきー DM受信ログ（{media_type_str}付き）" if media_part else "📭 とっきー DM受信ログ"
+                log_title = f"📭 とっきー DM受信ログ（{media_type_str}付き）" if media_url else "📭 とっきー DM受信ログ"
                 log_embed = discord.Embed(
                     title=log_title,
                     description=f"**送信者:** {message.author.mention} (`{message.author}` / ID: `{message.author.id}`)\n**内容:**\n{message.content if message.content else f'*({media_type_str}のみ)*'}",
@@ -125,7 +153,6 @@ async def on_message(message):
                     if media_type_str == "画像":
                         log_embed.set_image(url=media_url)
                     else:
-                        # 動画の場合はプレイヤーとしてプレビューしづらいためリンクとして記述
                         log_embed.add_field(name="動画リンク", value=f"[動画ファイルを開く]({media_url})", inline=False)
 
                 await log_channel.send(embed=log_embed)
@@ -185,7 +212,7 @@ async def on_message(message):
 
         is_kw = "とっきー" in message.content
 
-        if not (is_mentioned or is_reply or is_kw):
+        if not (is_mentioned or is_reply or is_kw or media_part):
             return
 
         if is_mentioned:
@@ -219,7 +246,7 @@ async def on_message(message):
                 model='gemini-3.1-flash-lite',
                 history=history,
                 config=types.GenerateContentConfig(
-                    system_instruction=SYSTEM_INSTRUCTION,
+                    system_instruction=current_instruction,
                     temperature=0.9,
                 )
             )
